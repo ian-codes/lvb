@@ -33,7 +33,7 @@
 </script>
 
 
-<form on:submit={handleSubmit}>
+<form>
     <fieldset>
         <legend class="{(attemptedSubmit && selectedReason == "") ? "warning" : ""}">
             Grund:
@@ -41,17 +41,15 @@
     
         {#each reasons as reason}
             <div class="{selectedReason === reason ? "selected" : ""}">
-                <input type="radio" id="{reason}" name="reason" value="{reason}"
-                on:change={() => selectedReason = reason} />
-                <label for="{reason}">{reason}</label>
+               
+                <label for="{reason}">
+                    <input type="radio" id="{reason}" name="reason" value="{reason}"
+                    on:change={() => selectedReason = reason} />
+
+                    {reason}
+                </label>
             </div>
         {/each}
-    </fieldset>
-    
-    <fieldset>
-        <label for="erklaerung">Erläuterung:</label>
-        <textarea class="{(attemptedSubmit && explanation == "") ? "warning" : ""}"
-        bind:value={explanation} id="erklaerung" name="erklaerung" placeholder="Hier kurz genauer erklären"></textarea>
     </fieldset>
 
     {#if selectedReason === "Verspätung"}
@@ -61,9 +59,15 @@
         bind:value={expectedDelay} type="text" name="zeit" id="zeit" placeholder="z.B. 30 Minuten"/>
     </fieldset>
     {/if}
+    
+    <fieldset>
+        <label for="erklaerung">Erläuterung:</label>
+        <textarea class="{(attemptedSubmit && explanation == "") ? "warning" : ""}"
+        bind:value={explanation} id="erklaerung" name="erklaerung" placeholder="Hier kurz genauer erklären"></textarea>
+    </fieldset>
 
     <div class="buttonsContainer">
-        <button type="submit">OK</button>
+        <button type="submit" on:click={handleSubmit}>Empfänger wählen</button>
         <button type="button" on:click={handleReset}>Zurücksetzen</button>
     </div>
 </form>
@@ -86,7 +90,7 @@
         display: flex;
         flex-direction: column;
         background: white;
-        gap: .5em;
+        gap: 8px;
     }
 
     fieldset > div {
@@ -108,6 +112,15 @@
         box-shadow: 0 1px 2px rgba(0, 0, 0, 0.363);
     }
 
+    label {
+        display: flex;
+        gap: 1em;
+        align-items: center;
+        width: 100%;
+        padding: 1em 0;
+        cursor: pointer;
+    }
+
     input, textarea {
         border-radius: none;
         margin: 0;
@@ -115,14 +128,6 @@
         padding: .5em;
         font-family: monospace;
         border: 1px dotted;
-        box-shadow: 1px 2px 3px inset rgba(0, 0, 0, 0.123);
-    }
-
-    label {
-        display: block;
-        width: 100%;
-        padding: 1em 0;
-        cursor: pointer;
     }
 
     textarea {
@@ -130,13 +135,15 @@
         width: 100%;
         box-sizing: border-box;
         resize: none;
+        box-shadow: 1px 2px 3px inset rgba(0, 0, 0, 0.123);
     }
 
     .buttonsContainer {
-        margin: 1em 0;
+        margin-top: 1em;
         display: flex;
         flex-direction: column;
         gap: 1em;
+        padding: 0 .5em
     }
 
     button:first-child {
@@ -144,6 +151,6 @@
     }
 
     .warning {
-        box-shadow: 0 0 0 2px red !important;
+        box-shadow: 0 0 0 2px red, 0 0 10px rgba(255, 0, 0, 0.274) !important;
     }
 </style>

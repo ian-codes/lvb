@@ -1,8 +1,6 @@
 <script>
     import { onMount } from "svelte";
 
-    export let activePage = ""
-
     export let selectedReason = ""
     export let expectedDelay = ""
     export let explanation = ""
@@ -29,7 +27,7 @@
     }
 
     function handleSubmit() {
-        console.log(isFinished)
+        // send emails
     }
 
     function handleBack() {
@@ -68,6 +66,19 @@
 
 
 <style>
+    h2 {
+        font-size: 1em;
+        font-weight: normal;
+        opacity: .8;
+        letter-spacing: 1px;
+        margin: .5em;
+        padding: 0;
+    }
+
+    h3, p {
+        margin: .5em;
+    }
+
     p {
         white-space: pre-line;
     }
@@ -86,6 +97,7 @@
         display: flex;
         flex-direction: column;
         gap: 1em;
+        padding: 0 .5em
     }
 
     button:first-child {

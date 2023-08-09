@@ -1,4 +1,5 @@
 <script>
+    import ChooseRecipients from "../lib/ChooseRecipients.svelte";
     import EmailPreview from "../lib/EmailPreview.svelte";
     import Reason from "../lib/Reason.svelte";
 
@@ -19,6 +20,11 @@
 {/if}
 
 {#if activePage == "pageTwo"}
+    <ChooseRecipients
+    bind:activePage={activePage} />
+{/if}
+
+{#if activePage == "pageThree"}
     <EmailPreview 
     bind:selectedReason={selectedReason}
     bind:expectedDelay={expectedDelay}

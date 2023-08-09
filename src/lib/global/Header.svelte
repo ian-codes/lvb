@@ -1,7 +1,12 @@
+<script>
+    import {base} from "$app/paths"
+</script>
+
+
 <header>
     <div>
         <h1>Abwesenheits-Melder</h1>
-        <div class="account"></div>
+        <div class="account" style="background-image: url('{base}/account.png');"></div>
     </div>
 </header>
 
@@ -31,7 +36,8 @@
     .account {
         width: 40px;
         height: 40px;
-        background: url('account.png') center no-repeat;
+        background-repeat: no-repeat;
+        background-position: center;
         background-size: contain;
         border-radius: 100%;
         transition: all .1s ease;

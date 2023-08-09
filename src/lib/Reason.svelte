@@ -1,4 +1,6 @@
 <script>
+    import { onMount } from "svelte";
+
     export let activePage = ""
 
     let attemptedSubmit = false
@@ -30,6 +32,12 @@
         explanation = ""
         expectedDelay = ""
     }
+
+    onMount(() => {
+        selectedReason = ""
+        explanation = ""
+        expectedDelay = ""
+    })
 </script>
 
 

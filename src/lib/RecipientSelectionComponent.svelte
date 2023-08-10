@@ -1,80 +1,137 @@
 <script>
-    import {base} from "$app/paths"
+    import { onMount } from "svelte";
 
     export let title = ""
     export let recipients = []
 
-    let isSelected = false
-    let dropdownIsOpen = false
-    
-    let inputWrapper
-    let buttonImage
-    let button
+    let isExpanded = false
 
-    function handleSelect() {
-        isSelected = !isSelected
-    }
+    let recipientSelectedStates = new Map()
+    let allSelected = false
 
     function handleDropdown() {
-        dropdownIsOpen = !dropdownIsOpen
-        buttonImage.style.backgroundImage = dropdownIsOpen ? `url('${base}/checkmark.png')` : `${base}/down.png`
+        isExpanded = !isExpanded
     }
+
+    function selectRecipient(recipient) {
+        recipientSelectedStates[recipient] = !recipientSelectedStates[recipient]
+
+        allSelected = areAllSelected()
+    }
+
+    function handleSelectAll() {
+        if (allSelected) deselectAll()
+        else selectAll()
+
+        allSelected = !allSelected
+    }
+
+    function selectAll() {
+        for (let key of recipientSelectedStates.keys()) {
+            recipientSelectedStates[key] = true
+        }
+    }
+
+    function deselectAll() {
+        for (let key of recipientSelectedStates.keys()) {
+            recipientSelectedStates[key] = false
+        }
+    }
+
+    function areAllSelected() {
+        for (let selected of recipientSelectedStates.values()) {
+            if (!selected) return false
+        }
+        return true
+    }
+
+    onMount(() => {
+        for (let recipient of recipients) {
+            recipientSelectedStates.set(recipient, false)
+        }
+    })
 </script>
 
 
 <div class="areaWrapper">
-    <div bind:this={inputWrapper} 
-    class="inputWrapper {isSelected ? "selected" : ""}">
+    <div  class="inputWrapper {isExpanded ? "expanded" : ""}">
         <label for="{title}">
-            <input on:change={handleSelect} id="{title}" name="{title}" type="checkbox" />
+            <input on:change={handleDropdown} id="{title}" name="{title}" type="checkbox" />
             {title}
         </label>
     </div>
 
-    {#if isSelected}
-        <button bind:this={button} class="btn-dropdown" on:click={handleDropdown}>
+    {#if isExpanded}
+        <ul>
+            <li>
+                <button on:click={handleSelectAll} value="all"
+                    class="{allSelected ? "selected" : ""}">
 
-            {dropdownIsOpen ? "Bestätigen" : "Personen auswählen"}
+                    {allSelected ? "Alle abwählen" : "Alle auswählen"}
 
-            <div bind:this={buttonImage} style="background-image: url('{base}/down.png');" 
-            class="arrowDown"></div>
-       
-        </button>
+                </button>
+            </li>
+            {#each recipients as recipient}
+                <li>
+                    <button class="{recipientSelectedStates[recipient] ? "selected" : ""}"
+                    on:click={() => selectRecipient(recipient)} value="{recipient}">
 
-        {#if dropdownIsOpen}
-            <select id="{title}Select" name="{title}Select" multiple>
-                {#each recipients as recipient}
-                    <option value="{recipient}">{recipient}</option>
-                {/each}
-            </select>
-        {/if}
+                        {recipient}
+
+                    </button>
+                </li>
+            {/each}
+        </ul>
     {/if}
 </div>
 
 
 <style>
-    .arrowDown {
-        background-position: center;
-        background-repeat: no-repeat;
-        background-size: contain;
-        width: 1em; 
-        height: 1em;
-        transition: all .1s ease;
-    }
-
-    .btn-dropdown {
+    ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        max-height: 200px;
+        box-shadow: 0 0 0 1px black;
+        overflow-y: scroll;
+        overflow-x: hidden;
+        gap: 1px;
         display: flex;
-        align-items: center;
-        justify-content: space-between;
+        flex-direction: column;
+        margin-bottom: 1em;
     }
 
     .selected {
-        background: linear-gradient(90deg, skyblue, rgb(147, 175, 235));
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.363);
+        background: gray;
+        color: white;
     }
 
-    option {
+    li {
+        width: 100%;
+    }
+
+    li button {
         padding: 1em;
+        font-size: 1rem;
+        display: block;
+        width: 100%;
+        text-align: left;
+        border: none;
+        cursor: pointer;
+    }
+
+    ul, li:last-child button {
+        border-bottom-left-radius: .5em;
+        border-bottom-right-radius: .5em;
+    }
+
+    .expanded {
+        background: linear-gradient(90deg, skyblue, rgb(147, 175, 235));
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.363);
+        border-bottom-left-radius: 0 !important;
+        border-bottom-right-radius: 0 !important;
+        box-shadow: 0 0 0 1px black;
     }
 
     .areaWrapper {
@@ -89,12 +146,11 @@
         align-items: center;
         justify-content: center;
         gap: 1em;
-        padding-left: .5em;
         border-radius: .5em;
         transition: all .1s ease;
     }
 
-    .inputWrapper:hover:not(.selected) {
+    .inputWrapper:hover:not(.expanded) {
         background: rgb(245, 245, 245);
     }
 
@@ -103,7 +159,7 @@
         align-items: center;
         gap: 1em;
         width: 100%;
-        padding: 1em 0;
+        padding: 1em;
         cursor: pointer;
     }
 </style>

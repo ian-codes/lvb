@@ -6,8 +6,8 @@
     let selectedReason = ""
     let expectedDelay = ""
     let explanation = ""
-
     let activePage = "pageOne"
+
 </script>
 
 

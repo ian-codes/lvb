@@ -10,16 +10,15 @@
 
     function handleSubmit() {
         activePage = "pageThree"
-        console.log(schoolSelected, apprenticeshipSelected)
     }
 
     function handleBack() {
         activePage = "pageOne"
     }
 
-    let teachers = ["Alle auswählen", "M. Abplanalp", "A. Baumgartner", "S. Annen", "F. Maurer"]
+    let teachers = ["M. Abplanalp", "A. Baumgartner", "S. Annen", "F. Maurer"]
 
-    let apprenticeshipPeople = ["Alle auswählen", "Lehrmeister", "Praxisbildner", "HR"]
+    let apprenticeshipPeople = ["Lehrmeister", "Praxisbildner", "HR"]
 
     function openDropdown(e) {
         openDropdown = e.target.InnerText
@@ -52,8 +51,8 @@
     </fieldset>
 
     <div class="buttonsContainer">
-        <button on:click={handleSubmit}>Email generieren</button>
-        <button on:click={handleBack}>Zurück</button>
+        <button class="button" on:click={handleSubmit}>Email generieren</button>
+        <button class="button" on:click={handleBack}>Zurück</button>
     </div>
 </section>
 

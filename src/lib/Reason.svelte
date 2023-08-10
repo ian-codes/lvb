@@ -1,4 +1,5 @@
 <script>
+    import {base} from "$app/paths";
     import { onMount } from "svelte";
 
     export let activePage = ""
@@ -50,7 +51,7 @@
         {#each reasons as reason}
             <div class="{selectedReason === reason ? "selected" : ""}">
                
-                <label for="{reason}">
+                <label class="inputLabel" for="{reason}">
                     <input type="radio" id="{reason}" name="reason" value="{reason}"
                     on:change={() => selectedReason = reason} />
 
@@ -62,7 +63,7 @@
 
     {#if selectedReason === "Verspätung"}
     <fieldset>
-        <label for="zeit">Geschätzte Verspätung</label>
+        <label for="zeit">Geschätzte Verspätung:</label>
         <input class="{(attemptedSubmit && expectedDelay == "") ? "warning" : ""}"
         bind:value={expectedDelay} type="text" name="zeit" id="zeit" placeholder="z.B. 30 Minuten"/>
     </fieldset>
@@ -75,19 +76,29 @@
     </fieldset>
 
     <div class="buttonsContainer">
-        <button type="submit" on:click={handleSubmit}>Empfänger wählen</button>
-        <button type="button" on:click={handleReset}>Zurücksetzen</button>
+        <button class="button" type="submit" on:click={handleSubmit}>
+            Empfänger wählen
+        </button>
+        <button class="button" type="button" on:click={handleReset}>
+            Zurücksetzen
+        </button>
     </div>
 </form>
 
-<div>
-    <p>
-    </p>
-</div>
-
-
 
 <style>
+    .left, .right {
+        background-position: center;
+        background-size: contain;
+        background-repeat: no-repeat;
+    }
+
+    .placeholder, .left, .right {
+        width: 30px;
+        height: 30px;
+        display: block;
+    }
+
     form {
         display: flex;
         flex-direction: column;
@@ -106,7 +117,6 @@
         align-items: center;
         justify-content: center;
         gap: 1em;
-        padding-left: .5em;
         border-radius: .5em;
         transition: all .1s ease;
     }
@@ -120,12 +130,12 @@
         box-shadow: 0 1px 2px rgba(0, 0, 0, 0.363);
     }
 
-    label {
+    .inputLabel {
         display: flex;
         gap: 1em;
         align-items: center;
         width: 100%;
-        padding: 1em 0;
+        padding: 1em;
         cursor: pointer;
     }
 
@@ -152,6 +162,13 @@
         flex-direction: column;
         gap: 1em;
         padding: 0 .5em
+    }
+
+    button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 2em;
     }
 
     button:first-child {

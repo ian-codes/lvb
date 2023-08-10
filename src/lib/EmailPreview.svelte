@@ -4,6 +4,7 @@
     export let selectedReason = ""
     export let expectedDelay = ""
     export let explanation = ""
+    export let activePage = ""
 
     let email = ""
 
@@ -31,7 +32,7 @@
     }
 
     function handleBack() {
-        activePage = "pageOne"
+        activePage = "pageTwo"
     }
 
     onMount(() => generateEmail())
@@ -58,8 +59,8 @@
     </div>
 
     <div class="buttonsContainer">
-        <button on:click={handleSubmit}>Empfänger wählen</button>
-        <button on:click={handleBack}>Zurück</button>
+        <button class="button" on:click={handleSubmit}>Absenden</button>
+        <button class="button" on:click={handleBack}>Zurück</button>
     </div>
 </section>
 
@@ -81,15 +82,6 @@
 
     p {
         white-space: pre-line;
-    }
-
-    button {
-        padding: 1em;
-        font-size: 1em;
-        border: none;
-        box-shadow: 0 2px 3px rgba(0, 0, 0, 0.185);
-        cursor: pointer;
-        border-radius: .5em;
     }
 
     .buttonsContainer {

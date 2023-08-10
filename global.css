@@ -27,7 +27,7 @@ input, textarea {
     color: white;
 }
 
-button {
+.button {
     font-family: 'Didact';
     padding: 1em;
     border: none;
@@ -38,7 +38,7 @@ button {
     transition: all .1s ease;
 }
 
-button:hover {
+.button:hover {
     transform: scale(1.01);
     font-weight: bold;
     filter: invert(1) saturate(0);

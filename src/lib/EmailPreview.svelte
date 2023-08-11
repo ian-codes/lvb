@@ -1,10 +1,12 @@
 <script>
     import { onMount } from "svelte";
+    import PreviewRecipientsDropdown from "./PreviewRecipientsDropdown.svelte";
 
     export let selectedReason = ""
     export let expectedDelay = ""
     export let explanation = ""
     export let activePage = ""
+    export let recipients = {}
 
     let email = ""
 
@@ -44,6 +46,14 @@
         Email-Vorschau
     </h2>
 
+    <div class="previewRecipientsContainer">
+        {#each Object.entries(recipients) as [title, recipients]}
+            <PreviewRecipientsDropdown
+            title={title}
+            recipients={recipients} />
+        {/each}
+    </div>
+
     <div>
         <h3>
             Betreff:
@@ -67,6 +77,13 @@
 
 
 <style>
+    .previewRecipientsContainer {
+        display: flex;
+        max-width: 100%;
+        flex-wrap: wrap;
+        gap: .5em;
+    }
+
     h2 {
         font-size: 1em;
         font-weight: normal;

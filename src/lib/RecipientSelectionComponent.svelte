@@ -2,11 +2,10 @@
     import { onMount } from "svelte";
 
     export let title = ""
-    export let recipients = []
+    export let recipients = new Map()
 
     let isExpanded = false
 
-    let recipientSelectedStates = new Map()
     let allSelected = false
 
     function handleDropdown() {
@@ -14,9 +13,13 @@
     }
 
     function selectRecipient(recipient) {
-        recipientSelectedStates[recipient] = !recipientSelectedStates[recipient]
+        recipients.set(recipient, !recipients.get(recipient))
 
         allSelected = areAllSelected()
+    }
+
+    function updateSelectedRecipients() {
+
     }
 
     function handleSelectAll() {
@@ -27,27 +30,28 @@
     }
 
     function selectAll() {
-        for (let key of recipientSelectedStates.keys()) {
-            recipientSelectedStates[key] = true
+        for (let key of recipients.keys()) {
+            recipients.set(key, true)
         }
     }
 
     function deselectAll() {
-        for (let key of recipientSelectedStates.keys()) {
-            recipientSelectedStates[key] = false
+        for (let key of recipients.keys()) {
+            recipients.set(key, false)
         }
     }
 
     function areAllSelected() {
-        for (let selected of recipientSelectedStates.values()) {
-            if (!selected) return false
+        for (let status of recipients.values()) {
+            if (!status) return false
         }
         return true
     }
 
     onMount(() => {
+        console.log("recipient component", recipients)
         for (let recipient of recipients) {
-            recipientSelectedStates.set(recipient, false)
+            recipient[1] = false
         }
     })
 </script>
@@ -73,11 +77,9 @@
             </li>
             {#each recipients as recipient}
                 <li>
-                    <button class="{recipientSelectedStates[recipient] ? "selected" : ""}"
+                    <button class:selected={recipient[1]}
                     on:click={() => selectRecipient(recipient)} value="{recipient}">
-
-                        {recipient}
-
+                        {recipient[0]}
                     </button>
                 </li>
             {/each}

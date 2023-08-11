@@ -1,37 +1,22 @@
 <script>
+    import { onMount } from "svelte";
     import RecipientSelectionComponent from "./RecipientSelectionComponent.svelte";
 
     export let activePage = ""
-
-    let schoolSelected = false
-    let apprenticeshipSelected = false
-
-    let openedDropdown = ""
+    export let recipients
 
     function handleSubmit() {
+        updateSelectedRecipients()
         activePage = "pageThree"
+    }
+
+    function updateSelectedRecipients() {
+        
     }
 
     function handleBack() {
         activePage = "pageOne"
     }
-
-    let teachers = ["M. Abplanalp", "A. Baumgartner", "S. Annen", "F. Maurer"]
-
-    let apprenticeshipPeople = ["Lehrmeister", "Praxisbildner", "HR"]
-
-    function openDropdown(e) {
-        openDropdown = e.target.InnerText
-    }
-
-    function handleSchoolDropdown() {
-        openedDropdown = openedDropdown == "" ? "school" : ""
-    }
-
-    function handleApprenticeshipDropdown() {
-        openedDropdown = openedDropdown == "" ? "apprenticeship" : ""
-    }
-
 </script>
 
 
@@ -41,13 +26,11 @@
     </h2>
 
     <fieldset>
-        <RecipientSelectionComponent 
-        title={"Schule"}
-        recipients={teachers} />
-
-        <RecipientSelectionComponent
-        title={"Lehrbetrieb"}
-        recipients={apprenticeshipPeople} />
+        {#each [...recipients] as [title, recipients]}
+            <RecipientSelectionComponent
+            title={title}
+            bind:recipients={recipients} />
+        {/each}
     </fieldset>
 
     <div class="buttonsContainer">
@@ -55,7 +38,6 @@
         <button class="button" on:click={handleBack}>Zurück</button>
     </div>
 </section>
-
 
 
 <style>
